@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Specialty(models.Model):
-    code = models.IntegerField(unique=True)
+    code = models.CharField(max_length=124, primary_key=True)
     title = models.CharField(max_length=124)
     picture = models.URLField(default='https://place-hold.it/100x60')
 
