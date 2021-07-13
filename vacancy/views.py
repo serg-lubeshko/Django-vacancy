@@ -1,9 +1,24 @@
+from django.db.models import Count
 from django.shortcuts import render
+
+from vacancy.models import Specialty, Company, Vacancy
 
 
 # Главная
 def main_view(request):
-    context = {'chapter': 'Здесь будет главная страница'}
+    specializations = Specialty.objects.annotate(count_vacancies_specialty=Count('vacancies'))
+    companies = Company.objects.annotate(count_vacancies_company=Count('vacancies')).order_by(
+        '-count_vacancies_company')[:8]
+    # companies_vacancies = companies.annotate(count_vacancies_company=Count('vacancies'))
+    # companies_vacancies = Vacancy.objects.annotate(count_vacancies_company=Count('company_id')).order_by('-count_vacancies_company')
+
+    print(companies.values())
+    context = {
+        'specializations': specializations,
+        'companies': companies,
+        # 'companies_vacancies': companies_vacancies,
+
+    }
     return render(request, template_name='vacancy/index.html', context=context)
 
 

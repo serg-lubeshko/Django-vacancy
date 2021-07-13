@@ -1,12 +1,14 @@
 from django.db import models
 
 
+# python manage.py create_data - заполняем данными из data.py
 class Specialty(models.Model):
     code = models.CharField(max_length=124, primary_key=True)
     title = models.CharField(max_length=124)
     picture = models.URLField(default='https://place-hold.it/100x60')
 
 
+# python manage.py create_data - заполняем данными из data.py
 class Company(models.Model):
     name = models.CharField(max_length=124)
     location = models.CharField(max_length=124)
@@ -15,6 +17,7 @@ class Company(models.Model):
     employee_count = models.PositiveSmallIntegerField()
 
 
+# python manage.py create_data - заполняем данными из data.py
 class Vacancy(models.Model):
     title = models.CharField(max_length=124)
     specialty = models.ForeignKey(Specialty, on_delete=models.CASCADE, related_name="vacancies")
