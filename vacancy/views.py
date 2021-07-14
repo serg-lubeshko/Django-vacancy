@@ -1,4 +1,5 @@
 from django.db.models import Count
+from django.http import Http404
 from django.shortcuts import render
 
 from vacancy.models import Specialty, Company, Vacancy
@@ -24,7 +25,11 @@ def main_view(request):
 
 # Все вакансии списком
 def show_list_all_vacancies(request):
-    context = {'chapter': 'Здесь будут все вакансии списком'}
+    vacancies = Vacancy.objects.order_by('-published_at')
+    context = {
+        'vacancies': vacancies,
+        'count_vacansies': vacancies.count()
+    }
     return render(request, template_name='vacancy/vacancies.html', context=context)
 
 
@@ -36,9 +41,12 @@ def show_list_specialty_vacancies(request, specialty):
 
 # Карточка компании
 def card_company_view(request, pk):
-    company = Company.objects.get(pk=pk)
-    company_vacancies = company.vacancies.all()
-    print(company_vacancies.values())
+    try:
+        company = Company.objects.get(pk=pk)
+        company_vacancies = company.vacancies.all()
+    except Company.DoesNotExist:
+        raise Http404
+    # print(company_vacancies.values())
     context = {
         "company_vacancies": company_vacancies,
         'company': company,
@@ -49,5 +57,14 @@ def card_company_view(request, pk):
 
 # Одна вакансия
 def vacancy_view(request, pk):
-    context = {'chapter': 'Здесь будет одна вакансия'}
+    try:
+        vacancy = Vacancy.objects.select_related('company').get(pk=pk)
+        print(vacancy.company.name)
+
+    except Company.DoesNotExist:
+        raise Http404
+    context = {
+        'vacancy': vacancy,
+        'chapter': 'Здесь будет одна вакансия'
+    }
     return render(request, template_name='vacancy/vacancy.html', context=context)

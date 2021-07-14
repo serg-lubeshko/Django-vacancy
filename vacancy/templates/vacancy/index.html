@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load ru_pluralize %}
 {% load static %}
 
 {% block content %}
@@ -61,8 +62,8 @@
                             </a>
                             <div class="card-body">
                                 <p class="card-text"><a
-                                        href="{% url 'company_view' company.pk %}">{{ company.count_vacancies_company }}
-                                    !!!!!вакансий</a></p>
+                                        href="{% url 'company_view' company.pk %}">{{ company.count_vacancies_company|ru_pluralize }}
+                                </a></p>
                             </div>
                         </div>
                     </div>
