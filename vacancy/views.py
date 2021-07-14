@@ -8,7 +8,7 @@ from vacancy.models import Specialty, Company, Vacancy
 def main_view(request):
     specializations = Specialty.objects.annotate(count_vacancies_specialty=Count('vacancies'))
     companies = Company.objects.annotate(count_vacancies_company=Count('vacancies')).order_by(
-        '-count_vacancies_company')[:8]
+        '-count_vacancies_company')
     # companies_vacancies = companies.annotate(count_vacancies_company=Count('vacancies'))
     # companies_vacancies = Vacancy.objects.annotate(count_vacancies_company=Count('company_id')).order_by('-count_vacancies_company')
 
@@ -36,7 +36,14 @@ def show_list_specialty_vacancies(request, specialty):
 
 # Карточка компании
 def card_company_view(request, pk):
-    context = {'chapter': 'Здесь будет карточка компании'}
+    company = Company.objects.get(pk=pk)
+    company_vacancies = company.vacancies.all()
+    print(company_vacancies.values())
+    context = {
+        "company_vacancies": company_vacancies,
+        'company': company,
+        'count_vacansies': company_vacancies.count()
+    }
     return render(request, template_name='vacancy/company.html', context=context)
 
 
