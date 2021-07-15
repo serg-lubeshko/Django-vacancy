@@ -36,11 +36,12 @@
                 {% for specialization in specializations %}
                     <div class="col-6 col-md-6 col-lg-3">
                         <div class="card pt-4 text-center mb-4">
-                            <img class="mx-auto d-block" src="{{ specialization.picture }}" width="100" height="60"
-                                 alt="">
+                            <a href="{% url "specialty_vacancies" specialization.pk %}"><img class="mx-auto d-block" src="{{ specialization.picture }}" width="100" height="60"
+                                 alt=""></a>
                             <div class="card-body">
                                 <p class="card-text mb-2">{{ specialization.title }}</p>
-                                <p class="card-text"><a href="#">{{ specialization.count_vacancies_specialty }}</a>
+                                <p class="card-text"><a
+                                        href="{% url "specialty_vacancies" specialization.pk %}">{{ specialization.count_vacancies_specialty }}</a>
                                 </p>
                             </div>
                         </div>
@@ -56,7 +57,7 @@
                 {% for company in companies %}
                     <div class="col-6 col-md-6 col-lg-3">
                         <div class="card pt-4 text-center mb-4">
-                            <a href="#" style="max-width: 150px;" class="mx-auto d-block">
+                            <a href="{% url 'company_view' company.pk %}" style="max-width: 150px;" class="mx-auto d-block">
                                 <img class="mx-auto d-block mw-100" src="{{ company.logo.url }}"
                                      alt="{{ company.logo }}">
                             </a>

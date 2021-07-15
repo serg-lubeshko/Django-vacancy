@@ -20,7 +20,7 @@
                             <div class="card-body px-4">
                                 <div class="row">
                                     <div class="col-12 col-md-8 col-lg-9">
-                                        <h2 class="h2 pb-2">{{ company_vacancy.title }}</h2>
+                                        <a href="{% url 'vacancy_view' company_vacancy.pk %}"><h2 class="h2 pb-2">{{ company_vacancy.title }}</h2></a>
                                         <p class="mb-2">{{ company_vacancy.skills|split_string}}</p>
                                         <p>От {{ company_vacancy.salary_min }} до {{ company_vacancy.salary_max }} руб.</p>
                                         <p class="text-muted pt-1">{{ company_vacancy.published_at }}</p>

@@ -6,7 +6,7 @@
         <div class="row mt-5">
             <div class="col-12 col-lg-2">
                 <div class="pl-3 mb-5">
-                    <p><a href="#">Назад</a></p>
+                    <p><a href="../">Назад</a></p>
                 </div>
             </div>
             <div class="col-12 col-lg-8">
@@ -17,10 +17,11 @@
                         <p class="m-0 pl-3">{{ vacancy.salary_min }} - {{ vacancy.salary_max }} руб.</p>
                     </div>
                     <p class="mt-2">{{ vacancy.skills|split_string }}</p>
-                    <p class="text-muted mb-4">{{ vacancy.company.name|capfirst}} ({{ vacancy.company.employee_count }} !!!человек),
+                    <p class="text-muted mb-4">{{ vacancy.company.name|capfirst }} ({{ vacancy.company.employee_count }}
+                        !!!человек),
                         {{ vacancy.company.location }} или удаленно </p>
                     <div style="line-height: 1.8;">
-                        {{vacancy.company.description}}<br>
+                        {{ vacancy.company.description }}<br>
                         {{ vacancy.description|safe }}
                     </div>
                     <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">

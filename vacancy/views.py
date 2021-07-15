@@ -35,7 +35,14 @@ def show_list_all_vacancies(request):
 
 # Вакансии по специализации
 def show_list_specialty_vacancies(request, specialty):
-    context = {'chapter': 'Здесь будут вакансии по специализации'}
+    try:
+        vacancies = Vacancy.objects.filter(specialty=specialty).order_by('-published_at')
+    except Vacancy.DoesNotExist:
+        raise Http404
+    context = {
+        'vacancies': vacancies,
+        'count_vacansies': vacancies.count()
+    }
     return render(request, template_name='vacancy/vacancies.html', context=context)
 
 
