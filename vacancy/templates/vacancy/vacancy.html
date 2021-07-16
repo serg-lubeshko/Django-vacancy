@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load ru_pluralize %}
 {% load split_string %}
 
 {% block content %}
@@ -6,7 +7,7 @@
         <div class="row mt-5">
             <div class="col-12 col-lg-2">
                 <div class="pl-3 mb-5">
-                    <p><a href="../">Назад</a></p>
+                    <p><a href="{% url 'specialty_vacancies' vacancy.specialty.pk %}">Назад</a></p>
                 </div>
             </div>
             <div class="col-12 col-lg-8">
@@ -17,8 +18,8 @@
                         <p class="m-0 pl-3">{{ vacancy.salary_min }} - {{ vacancy.salary_max }} руб.</p>
                     </div>
                     <p class="mt-2">{{ vacancy.skills|split_string }}</p>
-                    <p class="text-muted mb-4">{{ vacancy.company.name|capfirst }} ({{ vacancy.company.employee_count }}
-                        !!!человек),
+                    <p class="text-muted mb-4">{{ vacancy.company.name|capfirst }}
+                        ({{ vacancy.company.employee_count|ru_pluralize_people }}),
                         {{ vacancy.company.location }} или удаленно </p>
                     <div style="line-height: 1.8;">
                         {{ vacancy.company.description }}<br>

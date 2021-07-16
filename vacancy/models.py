@@ -4,7 +4,7 @@ from django.db import models
 # python manage.py create_data - заполняем данными из data.py
 class Specialty(models.Model):
     code = models.CharField(max_length=124, primary_key=True)
-    title = models.CharField(max_length=124)
+    title  = models.CharField(max_length=124)
     picture = models.URLField(default='https://place-hold.it/100x60')
 
 

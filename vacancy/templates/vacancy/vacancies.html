@@ -6,12 +6,12 @@
 
     <main class="container mt-3">
         <div class="col-12 col-lg-2">
-            <div class="pl-3 mb-5">
+            <div class="pl-3 mt-5 ">
                 <p><a href="{% url 'home' %}">Назад</a></p>
             </div>
         </div>
         <section>
-            <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;"><strong>Все вакансии</strong></h1>
+            <h1 class="h1 text-center mx-auto mt-4 pt-5" style="font-size: 70px;"><strong>{{ chapter|capfirst }}</strong></h1>
             <p class="text-center pt-1">{{ count_vacansies|ru_pluralize }}</p>
             <div class="row mt-5">
                 <div class="col-12 col-lg-8 offset-lg-2 m-auto">
