@@ -1,14 +1,14 @@
 import os
+from datetime import datetime
 
 import django
+
+from data.data import jobs, companies, specialties
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'conf.settings'
 django.setup()
 
-from datetime import datetime
-
 from vacancy.models import Company, Specialty, Vacancy
-from data.data import jobs, companies, specialties
 
 if __name__ == "__main__":
 
@@ -24,6 +24,7 @@ if __name__ == "__main__":
         Specialty.objects.get_or_create(
             code=specialty['code'],
             title=specialty['title'],
+            picture=specialty['picture']
         )
     for vacancy in jobs:
         Vacancy.objects.create(

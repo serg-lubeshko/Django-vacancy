@@ -45,7 +45,7 @@ def show_list_specialty_vacancies(request, specialty):
 def card_company_view(request, pk):
     try:
         company = Company.objects.get(pk=pk)
-        company_vacancies = company.vacancies.all()
+        company_vacancies = company.vacancies.select_related('specialty').all()
     except Company.DoesNotExist:
         raise Http404
     context = {

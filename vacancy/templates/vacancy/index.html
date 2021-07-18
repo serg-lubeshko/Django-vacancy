@@ -31,15 +31,17 @@
 
         <section class="mt-5 pt-3">
             <h2 class="h2 font-weight-normal text-center mb-5">Вакансии по рубрикам</h2>
-            {#            <div class="row mb-0">#}
             <div class="row mb-4">
                 {% for specialization in specializations %}
                     <div class="col-6 col-md-6 col-lg-3">
                         <div class="card pt-4 text-center mb-4">
                             <a href="{% url "specialty_vacancies" specialization.pk %}"><img class="mx-auto d-block"
-                                                                                             src="{{ specialization.picture }}"
-                                                                                             width="100" height="60"
-                                                                                             alt=""></a>
+                                    {% if  specialization.picture %}
+                                                                                             src="{{ specialization.picture.url }}"
+                                    {% else %}
+                                                                                             src="https://place-hold.it/100x60"{% endif %}
+                                                                                             width="70" height="60"
+                                                                                             alt="logo"></a>
                             <div class="card-body">
                                 <p class="card-text mb-2">{{ specialization.title }}</p>
                                 <p class="card-text"><a
@@ -49,7 +51,6 @@
                         </div>
                     </div>
                 {% endfor %}
-            </div>
             </div>
         </section>
 
@@ -62,9 +63,10 @@
                             <a href="{% url 'company_view' company.pk %}" style="max-width: 150px;"
                                class="mx-auto d-block">
                                 {% if  company.logo %}
-                                    <img class="mx-auto d-block mw-100" src="{{ company.logo.url }}">
+                                    <img class="mx-auto d-block mw-100" src="{{ company.logo.url }}"
+                                         alt="{{ company.logo }}">
                                 {% else %}
-                                    <img class="mx-auto d-block mw-100" src="https://place-hold.it/100x60">
+                                    <img class="mx-auto d-block mw-100" src="https://place-hold.it/100x60" alt="logo">
                                 {% endif %}
                             </a>
                             <div class="card-body">
