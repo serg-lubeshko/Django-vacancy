@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'vacancy.apps.VacancyConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
