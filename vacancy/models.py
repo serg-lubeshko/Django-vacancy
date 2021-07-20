@@ -19,7 +19,7 @@ class Company(models.Model):
     logo = models.ImageField(upload_to="media")
     description = models.TextField()
     employee_count = models.PositiveSmallIntegerField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applications")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applications", null=True)
 
 
 # Для заполнения БД можно использовать script.py либо
