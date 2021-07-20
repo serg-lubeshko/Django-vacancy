@@ -1,8 +1,9 @@
 from django.db.models import Count
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
-from vacancy.models import Specialty, Company, Vacancy
+from vacancy.forms import ApplicationForm
+from vacancy.models import Specialty, Company, Vacancy, Application
 
 
 # Главная
@@ -58,12 +59,33 @@ def card_company_view(request, pk):
 
 # Одна вакансия
 def vacancy_view(request, pk):
+    form = ApplicationForm()
     try:
         vacancy = Vacancy.objects.select_related('company').get(pk=pk)
-        print(vacancy.company.name)
+        vacancy_id = pk
     except Vacancy.DoesNotExist:
         raise Http404
     context = {
         'vacancy': vacancy,
+        'form': form
     }
+
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            form = ApplicationForm(request.POST)
+            if form.is_valid():
+                user_id = request.user.pk
+                user_vacancy_add = {"user_id": user_id, "vacancy_id": vacancy_id}
+                Application.objects.filter(user_id=user_id, vacancy_id=vacancy_id).delete()
+                Application.objects.create(**form.cleaned_data, **user_vacancy_add)
+                return redirect('sent')
+        else:
+            print("НАПРАВИТЬ НА РЕГИСТРАЦИЮ")
     return render(request, template_name='vacancy/vacancy.html', context=context)
+
+
+# перенаправления на sent.html
+
+def sent(request):
+    get_url = request.META.get('HTTP_REFERER')
+    return render(request, template_name="vacancy/sent.html", context={"get_url": get_url})

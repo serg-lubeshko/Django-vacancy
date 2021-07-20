@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -18,6 +19,7 @@ class Company(models.Model):
     logo = models.ImageField(upload_to="media")
     description = models.TextField()
     employee_count = models.PositiveSmallIntegerField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applications")
 
 
 # Для заполнения БД можно использовать script.py либо
@@ -31,3 +33,12 @@ class Vacancy(models.Model):
     salary_min = models.PositiveSmallIntegerField()
     salary_max = models.PositiveSmallIntegerField()
     published_at = models.DateField()
+
+
+class Application(models.Model):
+    written_username = models.CharField(max_length=100, verbose_name="Имя")
+    written_phone = models.CharField(max_length=20, verbose_name="Телефон")
+    written_cover_letter = models.TextField(verbose_name="Сопроводительное письмо")
+    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, verbose_name="Вакансия", related_name="applications")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь",
+                             related_name="applications_user")

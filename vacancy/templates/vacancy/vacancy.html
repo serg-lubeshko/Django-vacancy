@@ -13,7 +13,8 @@
             <div class="col-12 col-lg-8">
                 <section class="pl-3">
 
-                    <a href="{% url 'company_view' vacancy.company.pk %}"><img src="{{vacancy.company.logo.url }}" width="130" height="80" alt=""></a>
+                    <a href="{% url 'company_view' vacancy.company.pk %}"><img src="{{ vacancy.company.logo.url }}"
+                                                                               width="130" height="80" alt=""></a>
 
 
                     <div class="d-flex align-items-baseline align-content-baseline">
@@ -28,26 +29,25 @@
                         {{ vacancy.company.description }}<br>
                         {{ vacancy.description|safe }}
                     </div>
-                    <form action="/echo" class="card mt-4 mb-3" enctype="multipart/form-data">
+
+                    <form action="{% url "vacancy_view" vacancy.pk %}" class="card mt-4 mb-3"
+                          enctype="multipart/form-data" method="post">
                         <div class="card-body mx-3">
                             <p class="h5 mt-3 font-weight-normal">Отозваться на вакансию</p>
+
+                            {% csrf_token %}
                             <div class="form-group">
-                                <label class="mb-1 mt-2" for="userName">Вас зовут</label>
-                                <input class="form-control" type="text" placeholder="" id="userName">
-                            </div>
-                            <div class="form-group">
-                                <label class="mb-1" for="userPhone">Ваш телефон</label>
-                                <input class="form-control" type="tel" placeholder="" id="userPhone">
-                            </div>
-                            <div class="form-group">
-                                <label class="mb-1" for="userMsg">Сопроводительное письмо</label>
-                                <textarea class="form-control" rows="8" id="userMsg"></textarea>
+                                {{ form.as_table }}
                             </div>
                             <input type="submit" class="btn btn-primary mt-4 mb-2" value="Записаться на пробный урок">
+
                         </div>
                     </form>
                 </section>
             </div>
+
+
         </div>
+
     </main>
 {% endblock %}
