@@ -84,8 +84,15 @@ def vacancy_view(request, pk):
     return render(request, template_name='vacancy/vacancy.html', context=context)
 
 
-# перенаправления на sent.html
-
+# перенаправления на sent.html. "Отклик отправлен"
 def sent(request):
     get_url = request.META.get('HTTP_REFERER')
     return render(request, template_name="vacancy/sent.html", context={"get_url": get_url})
+
+
+#Заполненная форма компании
+def mycompany(request):
+    print(request.user.pk)
+    company_user = Company.objects.get(owner_id=request.user.pk)
+    print(company_user.name)
+    return render(request, template_name="vacancy/company-edit.html")
