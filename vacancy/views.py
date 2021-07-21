@@ -1,8 +1,11 @@
 from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views import View
 
-from vacancy.forms import ApplicationForm
+from django.views.generic import UpdateView
+
+from vacancy.forms import ApplicationForm, CompanyForms
 from vacancy.models import Specialty, Company, Vacancy, Application
 
 
@@ -90,9 +93,29 @@ def sent(request):
     return render(request, template_name="vacancy/sent.html", context={"get_url": get_url})
 
 
-#Заполненная форма компании
+# Заполненная форма компании
 def mycompany(request):
-    print(request.user.pk)
-    company_user = Company.objects.get(owner_id=request.user.pk)
-    print(company_user.name)
-    return render(request, template_name="vacancy/company-edit.html")
+    form = CompanyForms()
+    try:
+        a = Company.objects.get(owner_id=request.user.pk)
+    except:
+        print('NO')
+        form = CompanyForms(instance=a)
+        img =a.logo
+        print(form)
+        # if request.method == "GET":
+        #     company_user = Company.objects.get(owner_id=request.user.pk)
+        #     print(company_user.name)
+    return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img':img})
+
+# class CompanyUpdate(View):
+#     template_name = "vacancy/company-edit.html"
+#     def get_object(self):
+#         print('hello')
+
+
+#
+# class AuthorUpdateView(UpdateView):
+#     model = Company
+#     fields = ['name']
+#     template_name_suffix = '_update_form'

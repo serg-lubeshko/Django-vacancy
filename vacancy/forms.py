@@ -1,5 +1,5 @@
 from django import forms
-from .models import Application
+from .models import Application, Company
 
 
 class ApplicationForm(forms.ModelForm):
@@ -15,4 +15,17 @@ class ApplicationForm(forms.ModelForm):
             "written_username": "Вас зовут",
             "written_phone": "Ваш телефон",
             "written_cover_letter": "Сопроводительное письмо"
+        }
+
+
+class CompanyForms(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = ["name", "location", "logo", "description", "employee_count", "owner"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class":"form-control"}),
+            "location": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control"}),
+            "employee_count": forms.TextInput(attrs={"class": "form-control"}),
+            # "logo": forms.ImageField(),
         }
