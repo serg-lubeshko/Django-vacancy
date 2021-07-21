@@ -6,10 +6,16 @@ from django.contrib.auth.models import User
 
 
 class UserLoginForm(AuthenticationForm):
-    username = forms.CharField(label="Логин")
+    username = forms.CharField(
+        label="Логин",
+        widget=forms.TextInput(
+            attrs={'class': 'form-control', 'autofocus': True},
+        )
+    )
     password = forms.CharField(
         label='Пароль',
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+
     )
 
     def __init__(self, *args, **kwargs):
