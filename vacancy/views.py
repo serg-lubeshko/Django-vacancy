@@ -100,9 +100,9 @@ def mycompany(request):
         a = Company.objects.get(owner_id=request.user.pk)
     except:
         print('NO')
-        form = CompanyForms(instance=a)
-        img =a.logo
-        print(form)
+    form = CompanyForms(instance=a)
+    img =a.logo
+    print(form)
         # if request.method == "GET":
         #     company_user = Company.objects.get(owner_id=request.user.pk)
         #     print(company_user.name)
