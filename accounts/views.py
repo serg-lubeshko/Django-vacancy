@@ -25,7 +25,7 @@ def register(request):
             form.save()
             return redirect('/')
         else:
-            messages.error(request,"Ошибка регистрации")
+            messages.error(request, "Ошибка регистрации")
     else:
         form = UserRegistryForm()
     return render(request, template_name="accounts/register.html", context={'form': form})
@@ -34,4 +34,3 @@ def register(request):
 def user_logout(request):
     logout(request)
     return redirect("home")
-
