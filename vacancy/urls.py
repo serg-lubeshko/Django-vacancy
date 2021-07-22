@@ -1,7 +1,7 @@
 from django.urls import path
 
 from vacancy.views import main_view, show_list_all_vacancies, show_list_specialty_vacancies, \
-    card_company_view, vacancy_view, sent, mycompany
+    card_company_view, vacancy_view, sent, Mycompany
 
 urlpatterns = [
     path('', main_view, name='home'),
@@ -10,7 +10,7 @@ urlpatterns = [
     path('companies/<int:pk>', card_company_view, name='company_view'),
     path('vacancies/<int:pk>', vacancy_view, name='vacancy_view'),
     path('sent/', sent, name="sent"),
-    path('mycompany/',mycompany, name='mycompany')
+    path('mycompany/',Mycompany.as_view(), name='mycompany')
 
 
 ]

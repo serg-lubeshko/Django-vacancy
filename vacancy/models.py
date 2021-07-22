@@ -10,6 +10,9 @@ class Specialty(models.Model):
     # picture = models.URLField(default='https://place-hold.it/100x60')
     picture = models.ImageField(upload_to="media")
 
+    def __str__(self):
+        return self.title
+
 
 # Для заполнения БД можно использовать script.py либо
 # python manage.py create_data - заполняем данными из data.py
@@ -19,8 +22,10 @@ class Company(models.Model):
     logo = models.ImageField(upload_to="media")
     description = models.TextField()
     employee_count = models.PositiveSmallIntegerField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applications", null=True)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="applications", null=True)
 
+    def __str__(self):
+        return self.name.title()
 
 # Для заполнения БД можно использовать script.py либо
 # python manage.py create_data - заполняем данными из data.py
@@ -34,6 +39,9 @@ class Vacancy(models.Model):
     salary_max = models.PositiveSmallIntegerField()
     published_at = models.DateField()
 
+    def __str__(self):
+        return self.title
+
 
 class Application(models.Model):
     written_username = models.CharField(max_length=100, verbose_name="Имя")
@@ -42,3 +50,7 @@ class Application(models.Model):
     vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, verbose_name="Вакансия", related_name="applications")
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь",
                              related_name="applications_user")
+
+
+    def __str__(self):
+        return f'Отклик {self.pk}: {self.written_username}'

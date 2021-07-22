@@ -1,108 +1,117 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<head>
-    <meta charset="UTF-8">
-    <title>Моя компания | Джуманджи</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        body {
-            background-color: #F6F2E6;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Моя компания | Джуманджи</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <style>
+            body {
+                background-color: #F6F2E6;
+            }
+        </style>
+    </head>
 {% endblock %}
 
 
 {% block content %}
-<main class="container mt-3 pb-5">
-    <div class="row mt-5">
-        <div class="col-12 col-lg-4">
-            <aside class="pt-3 pb-4 px-4 mb-5 card">
-                <h1 class="h4 pt-2 pb-2">Моя компания</h1>
-                <div class="nav flex-column nav-pills">
-                    <a class="nav-link active" href="#">1. Информация о&nbsp;компании</a>
-                    <a class="nav-link" href="#">2. Вакансии</a>
-                </div>
-            </aside>
-        </div>
-        <div class="col-12 col-lg-8">
-            <div class="card">
-                <div class="card-body px-4 pb-4">
-                    <!-- Tab -->
-                    <section class="tab-pane fade show active">
-                        <h2 class="h4 pt-2 pb-3">Информация о&nbsp;компании</h2>
-                        <p class="alert alert-info" role="alert">
-                            Информация о компании обновлена
-                        </p>
-                        <form action="" enctype="multipart/form-data">
-                            {% csrf_token %}
+    <main class="container mt-3 pb-5">
+        <div class="row mt-5">
+            <div class="col-12 col-lg-4">
+                <aside class="pt-3 pb-4 px-4 mb-5 card">
+                    <h1 class="h4 pt-2 pb-2">Моя компания</h1>
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link active" href="#">1. Информация о&nbsp;компании</a>
+                        <a class="nav-link" href="#">2. Вакансии</a>
+                    </div>
+                </aside>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body px-4 pb-4">
+                        <!-- Tab -->
+                        <section class="tab-pane fade show active">
+                            <h2 class="h4 pt-2 pb-3">Информация о&nbsp;компании</h2>
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <p class="alert alert-info" role="alert">
+                                        {{ message }}
+                                    </p>
+                                {% endfor %}
+                            {% endif %}
+                            <form action="" enctype="multipart/form-data" , method="post">
+                                {% csrf_token %}
 
-                            <div class="row">
-                                <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
 
-                                    <div class="form-group pb-2">
-                                        <label class="mb-2 text-dark" for="{{ form.name.id_for_label }}">Название
-                                            компании</label>
-                                        {{ form.name }}
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2 text-dark" for="{{ form.name.id_for_label }}">Название
+                                                компании</label>
+                                            {{ form.name }}
+                                        </div>
+
                                     </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label class="mb-2 text-dark" for="companyLogo">Логотип</label>
+                                            <div class="row align-items-center">
+                                                <div class="col-6">
 
-                                </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label class="mb-2 text-dark" for="companyLogo">Логотип</label>
-                                        <div class="row align-items-center">
-                                            <div class="col-6">
+                                                    <img src="{{ img.url }}" alt=""
+                                                         style="max-width: 120px;height: auto;">
 
-                                                <img src="{{ img.url }}" alt="" style="max-width: 120px;height: auto;">
-
-                                            </div>
-                                            <div class="col-6" style="position: relative;">
-                                                <div class="input-group-prepend"
-                                                     style="position: absolute; top: 0;right: 15px;">
-
-                                                    <span class="btn btn-info px-4">Загрузить</span>
                                                 </div>
-                                                <div class="custom-file" style="">
-                                                    <input type="file" class="custom-file-input" id="inputGroupFile01">
+                                                <div class="col-6" style="position: relative;">
+                                                    <div class="input-group-prepend"
+                                                         style="position: absolute; top: 0;right: 15px;">
+
+                                                          <span class="btn btn-info px-4">Загрузить</span>
+{#                                                        <input type="file" class="btn btn-info px-4" name="logo">Загрузить</input>#}
+{#                                                         <input type="file" name="logo">#}
+                                                    </div>
+                                                    <div class="custom-file" style="">
+                                                        <input type="file" class="custom-file-input"
+                                                               id="inputGroupFile01" name="logo">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group pb-2">
-                                        <label class="mb-2 text-dark" for="{{ form.location.id_for_label }}">Количество
-                                            человек в компании</label>
-                                        {{ form.location }}
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2 text-dark" for="{{ form.employee_count.id_for_label }}">Количество
+                                                человек в компании</label>
+                                            {{ form.employee_count }}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2 text-dark"
+                                                   for="{{ form.location.id_for_label }}">География</label>
+                                            {{ form.location }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
-                                    <div class="form-group pb-2">
-                                        <label class="mb-2 text-dark"
-                                               for="{{ form.location.id_for_label }}">География</label>
-                                        {{ form.location }}
-                                    </div>
+                                <div class="form-group pb-2">
+                                    <label class="mb-2 text-dark" for="{{ form.description.id_for_label }}">Информация о&nbsp;компании</label>
+                                    {{ form.description }}
                                 </div>
-                            </div>
-                            <div class="form-group pb-2">
-                                <label class="mb-2 text-dark" for="{{ form.description.id_for_label }}">Информация о&nbsp;компании</label>
-                                {{ form.description }}
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-info" value="Сохранить">
-                            </div>
-                        </form>
-                    </section>
-                    <!-- END Tab -->
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-info" value="Сохранить">
+                                </div>
+                            </form>
+                        </section>
+                        <!-- END Tab -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
 {% endblock %}

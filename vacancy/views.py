@@ -1,5 +1,8 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
@@ -94,25 +97,33 @@ def sent(request):
 
 
 # Заполненная форма компании
-def mycompany(request):
-    form = CompanyForms()
-    try:
-        a = Company.objects.get(owner_id=request.user.pk)
-    except:
-        print('NO')
-    form = CompanyForms(instance=a)
-    img =a.logo
-    print(form)
-        # if request.method == "GET":
-        #     company_user = Company.objects.get(owner_id=request.user.pk)
-        #     print(company_user.name)
-    return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img':img})
+class Mycompany(SuccessMessageMixin, LoginRequiredMixin, View):
 
-# class CompanyUpdate(View):
-#     template_name = "vacancy/company-edit.html"
-#     def get_object(self):
-#         print('hello')
+    def get_object(self):
+        user = self.request.user
+        company_user = Company.objects.filter(owner_id=user)
+        return company_user
 
+    def get(self, request):
+        obj = self.get_object()
+        if len(obj)==0 :
+            return redirect('/')
+        form = CompanyForms(instance=obj)
+        img = obj.logo
+        return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img': img})
+
+    def post(self, request):
+        obj = self.get_object()
+        form = CompanyForms(request.POST, request.FILES, instance=obj)
+        if form.is_valid():
+            messages.success(request, 'Student added successfully')
+            form.save()
+            return (self.get(request))
+        else:
+            messages.error(request, 'Не корректные данные')
+            form = CompanyForms(instance=obj)
+            img = obj.logo
+        return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img':img})
 
 #
 # class AuthorUpdateView(UpdateView):
