@@ -101,13 +101,16 @@ class Mycompany(SuccessMessageMixin, LoginRequiredMixin, View):
 
     def get_object(self):
         user = self.request.user
-        company_user = Company.objects.filter(owner_id=user)
-        return company_user
+        try:
+            company_user = Company.objects.get(owner_id=user)
+            return company_user
+        except:
+            return None
 
     def get(self, request):
         obj = self.get_object()
-        if len(obj)==0 :
-            return redirect('/')
+        if obj is None:
+            return redirect('letsstart')
         form = CompanyForms(instance=obj)
         img = obj.logo
         return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img': img})
@@ -116,15 +119,41 @@ class Mycompany(SuccessMessageMixin, LoginRequiredMixin, View):
         obj = self.get_object()
         form = CompanyForms(request.POST, request.FILES, instance=obj)
         if form.is_valid():
-            messages.success(request, 'Student added successfully')
+            messages.success(request, 'Данные изменены успешно')
             form.save()
             return (self.get(request))
         else:
-            messages.error(request, 'Не корректные данные')
+            messages.error(request, 'Некорректные данные')
             form = CompanyForms(instance=obj)
             img = obj.logo
-        return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img':img})
+        return render(request, template_name="vacancy/company-edit.html", context={'form': form, 'img': img})
 
+
+class CompanyLetsStart(LoginRequiredMixin, View):
+
+    def get(self, request):
+        return render(request, template_name="vacancy/company-create.html")
+
+
+class CompanyCreate(SuccessMessageMixin, LoginRequiredMixin, View):
+    def get_object(self):
+        return self.request.user
+
+    def get(self, request):
+        form = CompanyForms()
+        return render(request, template_name="vacancy/company-edit.html", context={'form': form})
+
+    def post(self, request):
+        obj = self.get_object()
+        form = CompanyForms(request.POST, request.FILES)
+        if form.is_valid():
+            messages.success(request, 'Компания создана успешно')
+            form.save()
+            return (self.get(request))
+        else:
+            messages.error(request, 'Некорректные данные')
+            form = CompanyForms()
+        return render(request, template_name="vacancy/company-edit.html", context={'form': form})
 #
 # class AuthorUpdateView(UpdateView):
 #     model = Company
