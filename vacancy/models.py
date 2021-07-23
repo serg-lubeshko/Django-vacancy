@@ -22,7 +22,7 @@ class Company(models.Model):
     logo = models.ImageField(upload_to="media")
     description = models.TextField()
     employee_count = models.PositiveSmallIntegerField()
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="applications", null=True)
+    owner = models.OneToOneField(User, on_delete=models.SET_NULL, related_name="applications", null=True)
 
     def __str__(self):
         return self.name.title()

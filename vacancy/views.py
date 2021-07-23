@@ -6,7 +6,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
 
 from vacancy.forms import ApplicationForm, CompanyForms
 from vacancy.models import Specialty, Company, Vacancy, Application
@@ -100,7 +100,8 @@ def sent(request):
 class Mycompany(SuccessMessageMixin, LoginRequiredMixin, View):
 
     def get_object(self):
-        user = self.request.user
+        user = self.request.user.pk
+        print(user)
         try:
             company_user = Company.objects.get(owner_id=user)
             return company_user
@@ -137,7 +138,8 @@ class CompanyLetsStart(LoginRequiredMixin, View):
 
 class CompanyCreate(SuccessMessageMixin, LoginRequiredMixin, View):
     def get_object(self):
-        return self.request.user
+        print(self.request.user.pk)
+        return self.request.user.pk
 
     def get(self, request):
         form = CompanyForms()
@@ -148,14 +150,21 @@ class CompanyCreate(SuccessMessageMixin, LoginRequiredMixin, View):
         form = CompanyForms(request.POST, request.FILES)
         if form.is_valid():
             messages.success(request, 'Компания создана успешно')
-            form.save()
-            return (self.get(request))
+            form_add = form.save(commit=False)
+            form_add.owner_id = obj
+            form_add.save()
+            return redirect("mycompany")
         else:
             messages.error(request, 'Некорректные данные')
             form = CompanyForms()
         return render(request, template_name="vacancy/company-edit.html", context={'form': form})
-#
-# class AuthorUpdateView(UpdateView):
-#     model = Company
-#     fields = ['name']
-#     template_name_suffix = '_update_form'
+
+
+class VacancyListCompany(ListView):
+    model = Vacancy
+    template_name = "vacancy/vacancy-list.html"
+    context_object_name = "vacancies"
+
+    def get_queryset(self, **kwargs):
+        company = Company.objects.get(owner_id=self.request.user.pk).pk
+        return Vacancy.objects.filter(company_id=company).annotate(summs=Count("applications"))
