@@ -51,5 +51,5 @@ class VacancyForm(forms.ModelForm):
         }
 
         def __init__(self, *args, **kwargs):
-            super(VacancyForm, self).__init__(*args, **kwargs)
-            self.fields['specialty'].queryset = Specialty.objects.all()
+            super().__init__(*args, **kwargs)
+            self.fields['specialty':str].queryset = Specialty.objects.all()

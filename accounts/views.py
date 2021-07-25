@@ -1,7 +1,6 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.views.generic import CreateView
 
 from accounts.forms import UserLoginForm, UserRegistryForm
 

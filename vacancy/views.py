@@ -1,13 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Count, Q
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-
-from django.views.generic import UpdateView, ListView
+from django.views.generic import ListView
 
 from vacancy.forms import ApplicationForm, CompanyForms, VacancyForm
 from vacancy.models import Specialty, Company, Vacancy, Application
@@ -129,11 +127,10 @@ class Mycompany(SuccessMessageMixin, LoginRequiredMixin, View):
 
     def get_object(self):
         user = self.request.user.pk
-        print(user)
         try:
             company_user = Company.objects.get(owner_id=user)
             return company_user
-        except:
+        except Company.DoesNotExist:
             return None
 
     def get(self, request):
@@ -150,7 +147,7 @@ class Mycompany(SuccessMessageMixin, LoginRequiredMixin, View):
         if form.is_valid():
             messages.success(request, 'Данные изменены успешно')
             form.save()
-            return (self.get(request))
+            return self.get(request)
         else:
             messages.error(request, 'Некорректные данные')
             form = CompanyForms(instance=obj)
@@ -192,8 +189,11 @@ class VacancyListCompany(LoginRequiredMixin, ListView):
     context_object_name = "vacancies"
 
     def get_queryset(self, **kwargs):
-        company = Company.objects.get(owner_id=self.request.user.pk).pk
-        return Vacancy.objects.filter(company_id=company).annotate(summs=Count("applications"))
+        try:
+            company = Company.objects.get(owner_id=self.request.user.pk).pk
+            return Vacancy.objects.filter(company_id=company).annotate(summs=Count("applications"))
+        except Company.DoesNotExist:
+            return redirect("vacancy_create")
 
 
 class VacancyEdit(LoginRequiredMixin, View):
@@ -223,7 +223,7 @@ class VacancyEdit(LoginRequiredMixin, View):
         else:
             messages.error(request, "Ошибка в обновлении данных")
             return redirect('vacancy_edit', vacancy_id)
-        return render(request, template_name="vacancy/vacancy-edit.html", context={'form': form, 'review': 'Отклики -'})
+        # return render(request, template_name="vacancy/vacancy-edit.html", context={'form': form, 'review': 'Отклики -'})
 
 
 class VacancyCreate(LoginRequiredMixin, View):

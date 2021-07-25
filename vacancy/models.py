@@ -53,6 +53,57 @@ class Application(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь",
                              related_name="applications_user")
 
-
     def __str__(self):
         return f'Отклик {self.pk}: {self.written_username}'
+
+
+# модель «Resume – резюме» с полями:
+class Resume(models.Model):
+    """
+
+– Пользователь (user, связь с User, тип поля: OneToOneField)
+– Имя (name)
+– Фамилия (surname)
+– Готовность к работе (status) – Не ищу работу – Рассматриваю предложения – Ищу работу
+– Вознаграждение (salary)
+– Специализация (specialty)
+– Квалификация (grade)  – Стажер – Джуниор – Миддл – Синьор — Лид
+– Образование (education)
+– Опыт работы (experience)
+– Портфолио (portfolio)                            +
+    """
+    RESTING = 'RG'
+    CONSIDER = 'CR'
+    SEEK = 'SK'
+    STATUS_IN_RESUME = [
+        (RESTING, 'Не ищу работу'),
+        (CONSIDER, 'Рассматриваю предложения'),
+        (SEEK, 'Ищу работу')
+    ]
+
+    TRAINEE = 'FR'
+    JUNIOR = 'JR'
+    MIDL = 'ML'
+    SENIOR = 'SR'
+    LEAD = 'LD'
+    GRADE_IN_RESUME = [
+        (TRAINEE, 'Стажер'),
+        (JUNIOR, 'Джуниор'),
+        (MIDL, 'Миддл'),
+        (SENIOR, 'Синьор'),
+        (LEAD, 'Лид'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь", related_name="resume_user")
+    name = models.CharField(max_length=124, verbose_name="Имя")
+    surname = models.CharField(max_length=124, verbose_name="Фамилия")
+    status = models.CharField(max_length=2, choices=STATUS_IN_RESUME, default=SEEK)
+    salary = models.PositiveSmallIntegerField(verbose_name="Вознаграждение")
+    specialty = models.CharField(max_length=200, verbose_name="Специализация")
+    grade = models.CharField(max_length=2, choices=STATUS_IN_RESUME, default=TRAINEE)
+    education = models.CharField(max_length=124, verbose_name="Образование")
+    experience = models.PositiveSmallIntegerField(verbose_name="Опыт работы")
+    portfolio = models.URLField(blank=True, verbose_name="Портфолио")
+
+    def __str__(self):
+        return f"{self.name} {self.surname}"
