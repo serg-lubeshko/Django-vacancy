@@ -11,7 +11,7 @@ handler404 = custom_handler404
 handler500 = custom_handler500
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name="admin"),
     path('', include('vacancy.urls')),
     path('accounts/', include('accounts.urls')),
 ]

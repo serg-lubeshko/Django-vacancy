@@ -8,7 +8,7 @@ class Specialty(models.Model):
     code = models.CharField(max_length=124, primary_key=True)
     title = models.CharField(max_length=124)
     # picture = models.URLField(default='https://place-hold.it/100x60')
-    picture = models.ImageField(upload_to="media")
+    picture = models.ImageField(upload_to="picture")
 
     def __str__(self):
         return self.title
@@ -16,16 +16,18 @@ class Specialty(models.Model):
 
 # Для заполнения БД можно использовать script.py либо
 # python manage.py create_data - заполняем данными из data.py
+
 class Company(models.Model):
     name = models.CharField(max_length=124)
     location = models.CharField(max_length=124)
-    logo = models.ImageField(upload_to="media")
+    logo = models.ImageField(upload_to="logo")
     description = models.TextField()
     employee_count = models.PositiveSmallIntegerField()
     owner = models.OneToOneField(User, on_delete=models.SET_NULL, related_name="applications", null=True)
 
     def __str__(self):
         return self.name.title()
+
 
 # Для заполнения БД можно использовать script.py либо
 # python manage.py create_data - заполняем данными из data.py
@@ -37,7 +39,7 @@ class Vacancy(models.Model):
     description = models.TextField()
     salary_min = models.PositiveSmallIntegerField()
     salary_max = models.PositiveSmallIntegerField()
-    published_at = models.DateField()
+    published_at = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.title

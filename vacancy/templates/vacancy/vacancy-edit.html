@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+    {% block head %}
+        <head>
+            <meta charset="UTF-8">
+            <title>Моя компания | Джуманджи</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+                  crossorigin="anonymous">
+            <style>
+                body {
+                    background-color: #F6F2E6;
+                }
+            </style>
+        </head>
+    {% endblock %}
+    <main class="container mt-3 pb-5">
+        <div class="row mt-5">
+            <div class="col-12 col-lg-4">
+                <aside class="pt-3 pb-4 px-4 mb-5 card">
+                    <h1 class="h4 pt-2 pb-2">Моя компания</h1>
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link" href="#">1. Информация о&nbsp;компании</a>
+                        <a class="nav-link active" href="#">2. Вакансии</a>
+                    </div>
+                </aside>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body px-4 pb-4 tab-content">
+                        <!-- Tab -->
+                        <section>
+                            <h2 class="h4 pt-2 pb-3">Backend Middle/Senior</h2>
+                            {#                        <div>#}
+                            {#                            {{ field.label_tag }}#}
+                            {#                            {{ field }}#}
+                            {##}
+                            {#                            <div class="invalid-feedback">#}
+                            {#                                {{ field.errors }}#}
+                            {##}
+                            {#                            </div>#}
+                            {##}
+                            {#                        </div>#}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ message }}
+                                        </div>
+                                    {% else %}
+
+                                        <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% endif %}
+
+
+
+                            <form action="" enctype="multipart/form-data" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2 text-dark" for="{{ form.title.id_for_label }}">Название
+                                                вакансии</label>
+                                            {{ form.title }}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2 text-dark" for="{{ form.specialty.id_for_label }}">Специализация</label>
+                                            {#                                                            <select class="custom-select mr-sm-2" id="userSpecialization">#}
+                                            {#                                                              <option selected>Backend разработка</option>#}
+                                            {#                                                              <option value="1">Frontend разработка</option>#}
+                                            {#                                                              <option value="2">Project manager</option>#}
+                                            {#                                                            </select>#}
+                                            {{ form.specialty }}
+                                            {#                                        <select class="custom-select mr-sm-2" id="userSpecialization">#}
+                                            {#                                            {% for choice in form.specialty.field.queryset %}#}
+                                            {#                                                <option selected>{{ choice }} </option>#}
+                                            {#                                            {% endfor %}#}
+                                            {#                                        </select>#}
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2 text-dark" for="{{ form.salary_min.id_for_label }}">Зарплата
+                                                от</label>
+                                            {{ form.salary_min }}
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group pb-2">
+                                            <label class="mb-2" for="{{ form.salary_max.id_for_label }}">Зарплата
+                                                до</label>
+                                            {{ form.salary_max }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group pb-2">
+                                    <label class="mb-2 text-dark" for="{{ form.skills.id_for_label }}">Требуемые
+                                        навыки</label>
+                                    {{ form.skills }}
+                                </div>
+                                <div class="form-group pb-2">
+                                    <label class="mb-2 text-dark" for="{{ form.description.id_for_label }}">Описание
+                                        вакансии</label>
+
+                                    {{ form.description }}
+
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-info" value="Сохранить">
+                                </div>
+                            </form>
+                            <!-- END Vacancy info -->
+                            <!-- Applications -->
+                            <h2 class="h4 pt-2 pb-3">{{ review }} {{ reviews.count }}</h2>
+                            <!-- Application 1 -->
+
+                            {% for review in reviews %}
+                                <div class="card mt-3">
+                                    <div class="card-body px-4">
+                                        <p class="mb-1 font-weight-bold">{{ review.written_username }}</p>
+                                        <p class="mb-2"><a href="{{ review.written_phone }}"
+                                                           class="text-dark">{{ review.written_phone }}</a>
+                                        </p>
+                                        <p class="mb-1">{{ review.written_cover_letter }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
