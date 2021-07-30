@@ -42,19 +42,21 @@
                             {#                            </div>#}
                             {##}
                             {#                        </div>#}
-                            {% if messages %}
-                                {% for message in messages %}
-                                    {% if message.tags == 'error' %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ message }}
-                                        </div>
-                                    {% else %}
 
-                                        <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
-                                    {% endif %}
-
-                                {% endfor %}
-                            {% endif %}
+                        {% include "vacancy/_inc/message.html" %}
+{#                            {% if messages %}#}
+{#                                {% for message in messages %}#}
+{#                                    {% if message.tags == 'error' %}#}
+{#                                        <div class="alert alert-danger" role="alert">#}
+{#                                            {{ message }}#}
+{#                                        </div>#}
+{#                                    {% else %}#}
+{##}
+{#                                        <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>#}
+{#                                    {% endif %}#}
+{##}
+{#                                {% endfor %}#}
+{#                            {% endif %}#}
 
 
 

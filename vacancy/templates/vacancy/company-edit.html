@@ -35,13 +35,7 @@
                         <!-- Tab -->
                         <section class="tab-pane fade show active">
                             <h2 class="h4 pt-2 pb-3">Информация о&nbsp;компании</h2>
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <p class="alert alert-info" role="alert">
-                                        {{ message }}
-                                    </p>
-                                {% endfor %}
-                            {% endif %}
+ {% include "vacancy/_inc/message.html" %}
                             <form action="" enctype="multipart/form-data" , method="post">
                                 {% csrf_token %}
 

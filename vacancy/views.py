@@ -5,10 +5,10 @@ from django.db.models import Count, Q
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 
-from vacancy.forms import ApplicationForm, CompanyForms, VacancyForm
-from vacancy.models import Specialty, Company, Vacancy, Application
+from vacancy.forms import ApplicationForm, CompanyForms, VacancyForm, ResumeForm
+from vacancy.models import Specialty, Company, Vacancy, Application, Resume
 
 
 # Главная
@@ -243,6 +243,10 @@ class VacancySearch(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('s')
+        if query=="":
+            print('OK')
+        print(type(query), "qqqq")
+        
         object_list = Vacancy.objects.filter(
             Q(title__icontains=query) | Q(title__icontains=query.lower()) | Q(title__icontains=query.upper()) | Q(
                 title__icontains=query.title()) |
@@ -252,3 +256,51 @@ class VacancySearch(ListView):
                 description__icontains=query.upper()) | Q(description__icontains=query.title())).order_by(
             "-published_at")
         return object_list
+
+
+class ResumeEdit(LoginRequiredMixin, View):
+    def get_object(self, **kwargs):
+        try:
+            return Resume.objects.get(user_id=self.request.user.pk)
+        except Resume.DoesNotExist:
+            return None
+
+    def get(self, request):
+        objects = self.get_object()
+        if objects is None:
+            return redirect('resume_letsstart')
+        form = ResumeForm(instance=objects)
+        return render(request, "vacancy/resume/resume-edit.html", {"form": form})
+
+    def post(self, request):
+        objects = self.get_object()
+        form = ResumeForm(request.POST, instance=objects)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Резюме обновлено')
+            return redirect('resume_edit')
+        else:
+            messages.error(request, "Ошибка в обновлении данных")
+            return redirect('resume_edit')
+
+
+class ResumeLetsStart(TemplateView):
+    template_name = "vacancy/resume/resume-create.html"
+
+
+class ResumeCreate(View):
+    def get(self, request):
+        form = ResumeForm()
+        return render(request, "vacancy/resume/resume-edit.html", {"form": form})
+
+    def post(self, request):
+        form = ResumeForm(request.POST)
+        if form.is_valid():
+            form_add = form.save(commit=False)
+            form_add.user_id = request.user.pk
+            form_add.save()
+            messages.success(request, 'Резюме создано')
+            return redirect('resume_edit')
+        else:
+            messages.error(request, "Ошибка в создании данных")
+            return redirect('resume_create')

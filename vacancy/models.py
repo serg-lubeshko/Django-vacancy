@@ -78,10 +78,11 @@ class Resume(models.Model):
     STATUS_IN_RESUME = [
         (RESTING, 'Не ищу работу'),
         (CONSIDER, 'Рассматриваю предложения'),
-        (SEEK, 'Ищу работу')
+        (SEEK, 'Ищу работу'),
+        
     ]
 
-    TRAINEE = 'FR'
+    TRAINEE = 'TE'
     JUNIOR = 'JR'
     MIDL = 'ML'
     SENIOR = 'SR'
@@ -97,12 +98,15 @@ class Resume(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь", related_name="resume_user")
     name = models.CharField(max_length=124, verbose_name="Имя")
     surname = models.CharField(max_length=124, verbose_name="Фамилия")
-    status = models.CharField(max_length=2, choices=STATUS_IN_RESUME, default=SEEK)
+    status = models.CharField(max_length=2, choices=STATUS_IN_RESUME, default=SEEK, verbose_name="Готовность к работ")
     salary = models.PositiveSmallIntegerField(verbose_name="Вознаграждение")
-    specialty = models.CharField(max_length=200, verbose_name="Специализация")
-    grade = models.CharField(max_length=2, choices=STATUS_IN_RESUME, default=TRAINEE)
-    education = models.CharField(max_length=124, verbose_name="Образование")
-    experience = models.PositiveSmallIntegerField(verbose_name="Опыт работы")
+    specialty = models.ForeignKey(Specialty,
+                                  on_delete=models.CASCADE,
+                                  related_name="resume",
+                                  verbose_name="Специализация")
+    grade = models.CharField(max_length=2, choices=GRADE_IN_RESUME, default=TRAINEE, verbose_name="Квалификация")
+    education = models.TextField(verbose_name="Образование")
+    experience = models.TextField(verbose_name="Опыт работы")
     portfolio = models.URLField(blank=True, verbose_name="Портфолио")
 
     def __str__(self):

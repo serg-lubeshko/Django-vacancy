@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <head>
+        <meta charset="UTF-8">
+        <title>Моя компания | Джуманджи</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <style>
+            body {
+                background-color: #F6F2E6;
+            }
+        </style>
+    </head>
+{% endblock %}
+
+{% block content %}
+  <main class="container mt-3 pb-5">
+    <section class="col-12 col-lg-6 offset-lg-3 mt-5 card">
+      <div class="card-body px-3 pb-4">
+        <h1 class="h4 pt-2 pb-3">Мое резюме</h1>
+
+           {% include "vacancy/_inc/message.html" %}
+        <form action=" " class="" enctype="multipart/form-data", method="post">
+            {% csrf_token %}
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="{{ form.name.id_for_label }}">Имя</label>
+                  {{form.name}}
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="{{ form.surname.id_for_label }}">Фамилия</label>
+                  {{form.surname}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="{{ form.status.id_for_status }}">Готовность к работе</label>
+                  {{ form.status }}
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group pb-2">
+                  {{ form.salary.errors }}
+                <label class="mb-2 text-dark" for="{{ form.salary.id_for_salary }}">Ожидаемое вознаграждение</label>
+                  {{form.salary}}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="{{ form.specialty.id_for_specialty }}">Специализация</label>
+                  {{form.specialty}}
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="form-group pb-2">
+                <label class="mb-2 text-dark" for="{{ form.grade.id_for_grade }}">Квалификация</label>
+{#                  {% for i in form.grade %}#}
+{#                      {{ form.i.value }}#}
+{#                  {% endfor %}#}
+                  {{form.grade}}
+
+
+{#                  <select class="custom-select mr-sm-2" id="userSpecialization">#}
+{#                      {% for choice in form.grade%}#}
+{#                          {{ choice}}#}
+{#                      {% endfor %}#}
+
+
+
+              </div>
+            </div>
+          </div>
+          <div class="form-group pb-2">
+            <label class="mb-2 text-dark" for="{{ form.education.id_for_education }}">Образование</label>
+              {{ form.education }}
+          </div>
+          <div class="form-group pb-2">
+            <label class="mb-2 text-dark" for="{{ form.experience.id_for_experience }}">Опыт работы</label>
+              {{form.experience}}
+          </div>
+          <div class="form-group pb-3">
+            <label class="mb-2 text-dark" for="{{ form.portfolio.id_for_portfolio }}">Ссылка на портфолио</label>
+              {{form.portfolio}}
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-info" value="Сохранить">
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+{% endblock %}
