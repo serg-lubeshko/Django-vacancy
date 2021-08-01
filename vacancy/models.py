@@ -79,7 +79,6 @@ class Resume(models.Model):
         (RESTING, 'Не ищу работу'),
         (CONSIDER, 'Рассматриваю предложения'),
         (SEEK, 'Ищу работу'),
-        
     ]
 
     TRAINEE = 'TE'

@@ -76,4 +76,3 @@ class ResumeForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['specialty':str].queryset = Specialty.objects.all()
-            
